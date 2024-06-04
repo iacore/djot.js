@@ -3,7 +3,7 @@ import {
   parse,
   type ParseOptions,
   renderHTML,
-} from "https://raw.githubusercontent.com/iacore/djot.js/1074c09/src/index.ts";
+} from "./src/index.ts";
 
 
 import loader from "lume/core/loaders/text.ts";
