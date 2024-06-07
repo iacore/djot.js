@@ -1,3 +1,21 @@
+/// Hello, potential plugin users.
+/// This plugin supports a specific variant of Djot that supports arbitrary tags that's different from the [official Djot syntax](https://htmlpreview.github.io/?https://github.com/jgm/djot/blob/master/doc/syntax.html).
+/// 
+/// With this plugin, you can write:
+/// 
+/// :::: details
+/// ::: summary
+/// summary here
+/// :::
+/// detailed description here
+/// ::::
+///
+/// That's all the difference in syntax.
+/// 
+/// ## Usage
+/// 
+/// import djot from "https://cdn.jsdelivr.net/gh/iacore/djot.js@GIT_COMMIT_HASH/lume-djot-plugin.ts"
+
 import {
   type HTMLRenderOptions,
   parse,
