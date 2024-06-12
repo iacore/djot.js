@@ -3,7 +3,7 @@ import  { Doc, Reference, Footnote, Link, HasChildren,
 import  { getStringContent } from "./parse.ts";
 import  { Options, Warning } from "./options.ts";
 
-interface HTMLRenderOptions extends Options {
+export interface HTMLRenderOptions extends Options {
   overrides?: Visitor<HTMLRenderer, string>;
 }
 
