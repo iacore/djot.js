@@ -109,7 +109,7 @@ const getListStart = function(marker: string, style: string): number | undefined
   return undefined;
 }
 
-interface ParseOptions extends Options {
+export interface ParseOptions extends Options {
   sourcePositions?: boolean;
 }
 

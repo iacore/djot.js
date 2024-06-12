@@ -17,12 +17,16 @@
 /// import djot from "https://cdn.jsdelivr.net/gh/iacore/djot.js@GIT_COMMIT_HASH/lume-djot-plugin.ts"
 
 import {
-  type HTMLRenderOptions,
   parse,
-  type ParseOptions,
   renderHTML,
+  applyFilter,
 } from "./src/index.ts";
-
+import {
+  type HTMLRenderOptions,
+} from "./src/html.ts";
+import {
+  type ParseOptions,
+} from "./src/parse.ts";
 
 import loader from "lume/core/loaders/text.ts";
 import { merge } from "lume/core/utils/object.ts";
@@ -54,7 +58,7 @@ export class DjotEngine implements Engine {
   constructor() {
   }
 
-  deleteCache() {}
+  deleteCache() { }
 
   render(
     content: string,
@@ -72,11 +76,16 @@ export class DjotEngine implements Engine {
     if (typeof content !== "string") {
       content = String(content);
     }
-    const doc = parse(content, this.parseOptions);
+    const doc = parse(content as string, this.parseOptions);
+    applyFilter(doc, () => ({
+      section: (el) => {
+        return el.children;
+      },
+    }))
     return renderHTML(doc, this.renderOptions);
   }
 
-  addHelper() {}
+  addHelper() { }
 }
 
 function render(doc) {
