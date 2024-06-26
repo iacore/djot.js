@@ -235,10 +235,10 @@ class HTMLRenderer {
 
       case "ordered_list": {
         const extraAttr : Record<string,string> = {};
-        if (node.start && node.start !== 1) {
+        if (node.start != null && node.start !== 1) {
           extraAttr.start = node.start.toString();
         }
-        if (node.style && !/1/.test(node.style)) {
+        if (node.style != null && !/1/.test(node.style)) {
           extraAttr.type = node.style.replace(/[().]/g, "");
         }
         return this.inTags("ol", node, 2, extraAttr);
