@@ -79,6 +79,7 @@ export class DjotEngine implements Engine {
     const doc = parse(content as string, this.parseOptions);
     applyFilter(doc, () => ({
       section: (el) => {
+        if (el.children.length > 0) el.children[0].attributes = el.attributes
         return el.children;
       },
     }))
