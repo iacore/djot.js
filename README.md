@@ -8,6 +8,14 @@ implementation](https://github.com/jgm/djot.lua).
 It is currently powering the [djot
 playground](https://djot.net/playground).
 
+## Lume Plugin
+
+You may import `lume-djot-plugin.ts` in your lume projects like so:
+
+```ts
+import djot from "https://codeberg.org/iacore/djot.js/raw/tag/0.3.2-lume/lume-djot-plugin.ts";
+```
+
 ## Script API
 
 These are available after you run `npm install`, which will
