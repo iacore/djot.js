@@ -113,7 +113,7 @@ export interface ParseOptions extends Options {
   sourcePositions?: boolean;
 }
 
-// Parsing ocntext:
+// Parsing context:
 enum Context {
   Normal = 0,    // add str nodes as children of tip
   Verbatim = 1,  // gather str, escape, soft_break, hard_break in accumulatedText

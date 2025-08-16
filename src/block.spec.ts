@@ -23,7 +23,7 @@ describe("EventParser", () => {
   it("parses block quotes", () => {
     const events = [];
     for (const event of parseEvents("> hello\n> there\nlazy\n>\n> hi\n")) {
-      //                            01234567 89012345 67890 12 345678
+      //                             01234567 89012345 67890 12 34567
       events.push(event);
     }
     expect(events).toStrictEqual([
@@ -46,7 +46,7 @@ describe("EventParser", () => {
   it("parses headings", () => {
     const events = [];
     for (const event of parseEvents("## hello\n## there\nlazy\n")) {
-      //                            012345678 901234567 89012
+      //                             012345678 901234567 89012
       events.push(event);
     }
     expect(events).toStrictEqual([
@@ -63,7 +63,7 @@ describe("EventParser", () => {
   it("parses reference definitions", () => {
     const events = [];
     for (const event of parseEvents("[foo]: bar\n baz\n")) {
-      //                            0123456789 01234 5
+      //                             01234567890 12345
       events.push(event);
     }
     expect(events).toStrictEqual([
@@ -75,10 +75,37 @@ describe("EventParser", () => {
     ]);
   });
 
+  it("parses reference definition with URL on next line", () => {
+    const events = [];
+    for (const event of parseEvents("[foo]:\n bar")) {
+      //                             0123456 7890
+      events.push(event);
+    }
+    expect(events).toStrictEqual([
+      { startpos: 0, endpos: 0, annot: "+reference_definition" },
+      { startpos: 0, endpos: 4, annot: "reference_key" },
+      { startpos: 8, endpos: 10, annot: "reference_value" },
+      { startpos: 11, endpos: 11, annot: "-reference_definition" }
+    ]);
+  });
+
+  it("parses reference definition without space after colon as para", () => {
+    const events = [];
+    for (const event of parseEvents("[foo]:bar")) {
+      //                             012345678
+      events.push(event);
+    }
+    expect(events).toStrictEqual([
+      { startpos: 0, endpos: 0, annot: "+para" },
+      { startpos: 0, endpos: 8, annot: "str" },
+      { startpos: 9, endpos: 9, annot: "-para" }
+    ]);
+  });
+
   it("parses tables", () => {
     const events = [];
     for (const event of parseEvents("| a | b |\n|--|--:|\n|33|2| ")) {
-      //                            012345678 901234567 8901234
+      //                             0123456789 012345678 9012345
       events.push(event);
     }
     expect(events).toStrictEqual([
@@ -111,7 +138,7 @@ describe("EventParser", () => {
   it("parses code blocks", () => {
     const events = [];
     for (const event of parseEvents("```` python\nif x == 3:\n  y = 4\n````\n")) {
-      //                            01234567890 12345678901 23456789 01234 5
+      //                             012345678901 23456789012 34567890 12345
       events.push(event);
     }
     expect(events).toStrictEqual([
@@ -126,7 +153,7 @@ describe("EventParser", () => {
   it("parses list items", () => {
     const events = [];
     for (const event of parseEvents("- one\n- two\n1. three\n(iv) four\n\n - sub\n\n   two\n")) {
-      //                             012345 678901 234567890 1234567890 1 2345678 9  123456
+      //                             012345 678901 234567890 1234567890 1 2345678 9 0123456
       events.push(event);
     }
     expect(events).toStrictEqual([
@@ -173,7 +200,7 @@ describe("EventParser", () => {
   it("parses captions", () => {
     const events = [];
     for (const event of parseEvents(" ^ This is a\n*capt*\n\n")) {
-      //                            012345678901 2345678 9 0
+      //                             0123456789012 3456789 0
       events.push(event);
     }
     expect(events).toStrictEqual([
@@ -191,7 +218,7 @@ describe("EventParser", () => {
   it("parses thematic breaks", () => {
     const events = [];
     for (const event of parseEvents(" - - - -\n")) {
-      //                            012345678901 2345678 9 0
+      //                             012345678
       events.push(event);
     }
     expect(events).toStrictEqual([
@@ -202,7 +229,7 @@ describe("EventParser", () => {
   it("parses fenced divs", () => {
     const events = [];
     for (const event of parseEvents(":::: foo \nhello\n\nhi\n::::")) {
-      //                            012345678 901234 5 6789 01234 56789
+      //                             0123456789 012345 6 789 0123
       events.push(event);
     }
     expect(events).toStrictEqual([
@@ -224,7 +251,7 @@ describe("EventParser", () => {
     const events = [];
     for (const event of parseEvents(
           "[^note]: This is a\nnote\n\n  second par\n\nafter note\n")) {
-      //   012345678901234567 89012 3 4567890123456 7 89012345678 9
+      //   0123456789012345678 90123 4 5678901234567 8 90123456789
       events.push(event);
     }
     expect(events).toStrictEqual([
@@ -251,7 +278,7 @@ describe("EventParser", () => {
     const events = [];
     for (const event of parseEvents(
           "{.foo}\n{#bar\n .baz}\nHello")) {
-      //   012345 678901 2345678 901234
+      //   0123456 789012 3456789 01234
       events.push(event);
     }
     expect(events).toStrictEqual([
@@ -274,7 +301,7 @@ describe("EventParser", () => {
   it("parses failed block attributes as para", () => {
     const events = [];
     for (const event of parseEvents("{.foo\nbar *baz*\n\n")) {
-      //   012345 678901234 5 6
+      //                             012345 6789012345 6
       events.push(event);
     }
     expect(events).toStrictEqual([
