@@ -89,9 +89,6 @@ export class DjotEngine implements Engine {
   addHelper() { }
 }
 
-function render(doc) {
-}
-
 /** Register the plugin to support Djot */
 export default function (userOptions?: Options) {
   const options = merge(defaults, userOptions);
